@@ -102,11 +102,17 @@ social_preview_image: # string, local or CORS resources
 toc: true
 
 comments:
-  # Global switch for the post-comment system. Keeping it empty means disabled.
-  provider: utterances
-  utterances:
-    repo: nishantbansal2003/nishantbansal2003.github.io
-    issue_term: pathname
+  provider: giscus
+  giscus:
+    repo: NishantBansal2003/nishantbansal2003.github.io
+    repo_id: R_kgDORJgUTw
+    category: Announcements
+    category_id: DIC_kwDORJgUT84C2GJl
+    mapping: pathname
+    strict: 0
+    input_position: bottom
+    lang: en
+    reactions_enabled: 1
 
 # Self-hosted static assets, optional › https://github.com/cotes2020/chirpy-static-assets
 assets:
