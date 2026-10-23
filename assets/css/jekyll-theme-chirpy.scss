@@ -1,0 +1,21 @@
+---
+---
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+/* hide line numbers in code blocks, same as the theme's `.nolineno` */
+.highlight table td:first-child {
+  padding: 0 !important;
+  margin-right: 0;
+
+  .lineno {
+    display: none;
+  }
+}
