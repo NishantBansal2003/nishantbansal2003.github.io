@@ -1,49 +1,58 @@
 ---
 title: "LND: Zero-Timestamp Gossip DoS"
 date: 2026-06-18 10:30:00 +0530
-categories: [lightning]
-tags: [lightning, security, bolt7, dos, lnd, fuzzing]
+categories: [Lightning, Security]
+tags: [lnd, dos, bolt7, fuzzing]
 description: Technical analysis of a zero-timestamp gossip DoS vulnerability in LND.
-image: ../assets/img/lnd-zero-timestamp-dos.png
+image:
+  path: /assets/img/lnd-zero-timestamp-dos.png
+  alt: Gossip messages with a zero timestamp crashing an LND node
+disclosure:
+  affected: "All versions before v0.20.1"
+  fixed: v0.20.1
+  fixed_url: https://github.com/lightningnetwork/lnd/releases/tag/v0.20.1-beta
+  impact: Remote node crash
 ---
 
 LND versions before _v0.20.1_ are vulnerable to a DoS issue where a specially crafted `channel_update` or `node_announcement` message can crash a node. Operators should upgrade promptly to avoid service disruption. The issue is fixed in [v0.20.1](https://github.com/lightningnetwork/lnd/releases/tag/v0.20.1-beta) and later.
 
-## Vulnerability
+## Background
 
 The Lightning Network uses [gossip messages](https://github.com/lightning/bolts/blob/master/07-routing-gossip.md) to maintain a distributed view of the network graph. Nodes exchange `channel_announcement`, `node_announcement`, and `channel_update` messages to advertise channels and routing policies. Before accepting `node_announcement` and `channel_update` messages, a Lightning node must first know and validate the corresponding `channel_announcement`.
 
 After validation, `node_announcement` and `channel_update` messages are propagated throughout the network. In LND, this propagation is handled by a gossip rebroadcast pipeline that uses a de-duplication cache to avoid repeatedly forwarding identical announcements. When a new announcement arrives, its timestamp is compared against any previously stored announcements for the same channel, direction and node. Newer announcements replace older ones, while older announcements are discarded. The implementation of this logic prior to _v0.20.1_ can be found in [`deDupedAnnouncements.addMsg`](https://github.com/lightningnetwork/lnd/blob/91423ee5198e116b210f7f1c2e8b506d5ab28266/discovery/gossiper.go#L1133-L1229).
 
+## The vulnerability
+
 The bug stems from how announcements with a timestamp of 0 are handled. When a zero-timestamp `node_announcement` or `channel_update` is received for the first time, no cache entry exists and `oldTimestamp` remains initialized to 0. As a result, the code incorrectly treats the announcement as a previously seen message and enters the duplicate-message path.
 
 However, because no previous entry existed, the `senders` map was never initialized. Attempting to write to this nil map triggers a runtime panic that terminates the LND daemon, resulting in a complete loss of node availability until it is restarted.
 
-## DoS Attack
+## The attack
 
 As discussed in the previous section, the panic is triggered only after a `node_announcement` or `channel_update` has passed validation and entered LND's gossip rebroadcast pipeline. Because gossip messages are authenticated, an attacker cannot simply modify an existing message; doing so would invalidate its signature and cause it to be rejected before reaching the vulnerable code path.
 
 To exploit the bug, the attacker must generate a validly signed `node_announcement` or `channel_update` with a timestamp of 0.
 
-### Method 1: Advertise a Real Channel
+### Method 1: Advertise a real channel
 
 The simplest approach is to open a public Lightning channel and advertise it normally. When broadcasting the corresponding `node_announcement` or `channel_update`, the attacker sets the timestamp to 0. A vulnerable LND node will accept the announcement and eventually trigger the panic.
 
-#### Attack Cost
+#### Attack cost
 
 This approach requires opening and eventually closing a public Lightning channel, incurring the associated on-chain fees. Furthermore, once the victim has processed the malicious announcement and restarted, the same announcement may be rejected as stale gossip, requiring a new channel to repeat the attack.
 
-### Method 2: Advertise a Synthetic Channel
+### Method 2: Advertise a synthetic channel
 
 A more efficient approach avoids opening a Lightning channel altogether. The attacker creates a funding transaction paying to a _2-of-2 P2WSH_ output controlled entirely by keys they own. After the funding transaction confirms, the attacker has sufficient information to construct a valid `channel_announcement` for a channel that does not correspond to any running Lightning node.
 
 Once the victim accepts the announcement, the attacker sends a corresponding zero-timestamp `node_announcement` or `channel_update`, triggering the panic. Because both channel endpoints are attacker-controlled, multiple valid announcements can be generated using different node identities without incurring channel-closing costs.
 
-#### Attack Cost
+#### Attack cost
 
 This method requires only a funding transaction and its associated confirmation fees. Additional announcements can be created from newly funded outputs, keeping the cost of repeated exploitation relatively low.
 
-## Fix
+## The fix
 
 BOLT 7 specifies that the sender of a `channel_update` _MUST set `timestamp` to greater than 0_, but does not explicitly define how receiving nodes should handle violations of this requirement. Due to this ambiguity, LND implicitly assumed that timestamps would always be valid.
 
@@ -71,7 +80,7 @@ The fuzz target used for discovery is available in the associated [pull request]
 - **2026-06-16:** [Gijs](https://github.com/gijswijs) confirms that the vulnerability can be disclosed publicly.
 - **2026-06-18:** Public disclosure of the vulnerability.
 
-## Remarks
+## Takeaways
 
 - This issue highlights the value of state-machine fuzzing in Lightning implementations, as protocol transition bugs are often missed by fuzzers focused only on message parsing.
 - The lack of an explicit requirement for handling invalid protocol message fields in the BOLT specification can lead to inconsistent implementations. Explicitly defining rejection behavior, or enforcing defensive validation in implementations, would help prevent similar issues.

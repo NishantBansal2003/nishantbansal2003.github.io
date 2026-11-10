@@ -1,10 +1,17 @@
 ---
 title: "CLN: Reused Funding Outpoint DoS"
 date: 2026-11-10 10:30:00 +0530
-categories: [lightning]
-tags: [lightning, security, bolt2, dos, cln, fuzzing]
+categories: [Lightning, Security]
+tags: [cln, dos, bolt2, fuzzing, smite]
 description: Technical analysis of a reused funding outpoint DoS vulnerability in CLN.
-image: ../assets/img/cln-reused-funding-outpoint-dos.png
+image:
+  path: /assets/img/cln-reused-funding-outpoint-dos.png
+  alt: Two channels opened on the same funding outpoint crashing a CLN node
+disclosure:
+  affected: "v0.12.0 through v26.06.2"
+  fixed: v26.06.6
+  fixed_url: https://github.com/ElementsProject/lightning/releases/tag/v26.06.6
+  impact: Remote node crash
 ---
 
 Core Lightning _v0.12.0_ through _v26.06.2_ accept a `funding_created` that reuses the funding outpoint of an existing channel.

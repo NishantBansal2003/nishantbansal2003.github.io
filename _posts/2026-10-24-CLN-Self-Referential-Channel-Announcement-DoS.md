@@ -1,10 +1,17 @@
 ---
 title: "CLN: Self-Referential Channel Announcement DoS"
 date: 2026-10-24 10:30:00 +0530
-categories: [lightning]
-tags: [lightning, security, bolt7, dos, cln, fuzzing]
+categories: [Lightning, Security]
+tags: [cln, dos, bolt7, fuzzing]
 description: Technical analysis of a self-referential channel_announcement DoS vulnerability in CLN.
-image: ../assets/img/cln-self-referential-channel-announcement-dos.png
+image:
+  path: /assets/img/cln-self-referential-channel-announcement-dos.png
+  alt: A channel_announcement naming the same node at both ends crashing a CLN node
+disclosure:
+  affected: "v25.02 through v26.04"
+  fixed: v26.04.1
+  fixed_url: https://github.com/ElementsProject/lightning/releases/tag/v26.04.1
+  impact: Persistent remote node crash
 ---
 
 Core Lightning _v25.02_ through _v26.04_ crash on a `channel_announcement` whose `node_id_1` and `node_id_2` are the same node.

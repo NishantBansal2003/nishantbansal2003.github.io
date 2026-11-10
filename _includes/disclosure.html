@@ -1,0 +1,31 @@
+{%- comment -%}
+  Summary strip for vulnerability writeups, filled from the post's front matter:
+
+  disclosure:
+    affected: "v25.02 through v26.04"
+    fixed: v26.04.1
+    fixed_url: https://github.com/.../releases/tag/v26.04.1
+    impact: Remote node crash   # optional
+
+  _plugins/disclosure-box.rb adds it to every post that has this block.
+  Styles live in assets/css/jekyll-theme-chirpy.scss.
+{%- endcomment -%}
+{%- assign d = page.disclosure -%}
+{%- if d -%}
+<div class="disclosure">
+  <div>
+    <span class="disclosure-label">Affected</span>
+    <span>{{ d.affected }}</span>
+  </div>
+  <div>
+    <span class="disclosure-label">Fixed in</span>
+    <span>{%- if d.fixed_url -%}<a href="{{ d.fixed_url }}">{{ d.fixed }}</a>{%- else -%}{{ d.fixed }}{%- endif -%}</span>
+  </div>
+  {%- if d.impact %}
+  <div>
+    <span class="disclosure-label">Impact</span>
+    <span>{{ d.impact }}</span>
+  </div>
+  {%- endif %}
+</div>
+{%- endif -%}
