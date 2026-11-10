@@ -2,7 +2,7 @@
 title: "LND: Zero-Timestamp Gossip DoS"
 date: 2026-06-18 10:30:00 +0530
 categories: [lightning]
-tags: [lightning, security, dos, lnd, fuzzing]
+tags: [lightning, security, bolt7, dos, lnd, fuzzing]
 description: Technical analysis of a zero-timestamp gossip DoS vulnerability in LND.
 image: ../assets/img/lnd-zero-timestamp-dos.png
 ---

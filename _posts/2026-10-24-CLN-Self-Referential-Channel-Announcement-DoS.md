@@ -2,7 +2,7 @@
 title: "CLN: Self-Referential Channel Announcement DoS"
 date: 2026-10-24 10:30:00 +0530
 categories: [lightning]
-tags: [lightning, security, dos, cln, fuzzing]
+tags: [lightning, security, bolt7, dos, cln, fuzzing]
 description: Technical analysis of a self-referential channel_announcement DoS vulnerability in CLN.
 image: ../assets/img/cln-self-referential-channel-announcement-dos.png
 ---
