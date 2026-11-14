@@ -15,7 +15,7 @@ disclosure:
 republished_from: https://security.lightning.engineering/2026/09/21/lnd-gossip-validation-barrier-stall.html
 ---
 
-LND _v0.19.0_ through _v0.20.0_ can send two validation results for a gossip message on a channel that has room for only one.
+LND v0.19.0 through v0.20.0 can send two validation results for a gossip message on a channel that has room for only one.
 The goroutine processing the message blocks forever and never releases its slot in the gossiper's validation barrier, which limits in-flight gossip processing to 1,000 messages.
 An attacker that sends **1,000** such announcements occupies every slot, causing the node to stop processing gossip entirely, effectively cutting it off from the routing network.
 LND keeps running but hangs on graceful shutdown, so the operator must kill it to recover, and the attack can be easily repeated after it restarts.

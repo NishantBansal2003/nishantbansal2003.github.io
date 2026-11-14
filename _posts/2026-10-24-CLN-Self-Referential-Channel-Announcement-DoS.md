@@ -14,7 +14,7 @@ disclosure:
   impact: Persistent remote node crash
 ---
 
-Core Lightning _v25.02_ through _v26.04_ crash on a `channel_announcement` whose `node_id_1` and `node_id_2` are the same node.
+Core Lightning v25.02 through v26.04 crash on a `channel_announcement` whose `node_id_1` and `node_id_2` are the same node.
 CLN never checks that the two endpoints differ, so `gossipd` adds the same node to its routing graph twice, trips a no-duplicates assertion, and aborts, taking the whole node down.
 Because the announcement is written to disk **before** it is loaded, `gossipd` reloads it and aborts again on **every restart**, so the node stays offline until the operator removes the record by hand.
 The attacker needs only an unspent 2-of-2 output it controls, so the attack costs nothing beyond on-chain fees.

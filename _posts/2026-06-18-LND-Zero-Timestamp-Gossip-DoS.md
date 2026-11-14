@@ -14,13 +14,13 @@ disclosure:
   impact: Remote node crash
 ---
 
-LND versions before _v0.20.1_ are vulnerable to a DoS issue where a specially crafted `channel_update` or `node_announcement` message can crash a node. Operators should upgrade promptly to avoid service disruption. The issue is fixed in [v0.20.1](https://github.com/lightningnetwork/lnd/releases/tag/v0.20.1-beta) and later.
+LND versions before v0.20.1 are vulnerable to a DoS issue where a specially crafted `channel_update` or `node_announcement` message can crash a node. Operators should upgrade promptly to avoid service disruption. The issue is fixed in [v0.20.1](https://github.com/lightningnetwork/lnd/releases/tag/v0.20.1-beta) and later.
 
 ## Background
 
 The Lightning Network uses [gossip messages](https://github.com/lightning/bolts/blob/master/07-routing-gossip.md) to maintain a distributed view of the network graph. Nodes exchange `channel_announcement`, `node_announcement`, and `channel_update` messages to advertise channels and routing policies. Before accepting `node_announcement` and `channel_update` messages, a Lightning node must first know and validate the corresponding `channel_announcement`.
 
-After validation, `node_announcement` and `channel_update` messages are propagated throughout the network. In LND, this propagation is handled by a gossip rebroadcast pipeline that uses a de-duplication cache to avoid repeatedly forwarding identical announcements. When a new announcement arrives, its timestamp is compared against any previously stored announcements for the same channel, direction and node. Newer announcements replace older ones, while older announcements are discarded. The implementation of this logic prior to _v0.20.1_ can be found in [`deDupedAnnouncements.addMsg`](https://github.com/lightningnetwork/lnd/blob/91423ee5198e116b210f7f1c2e8b506d5ab28266/discovery/gossiper.go#L1133-L1229).
+After validation, `node_announcement` and `channel_update` messages are propagated throughout the network. In LND, this propagation is handled by a gossip rebroadcast pipeline that uses a de-duplication cache to avoid repeatedly forwarding identical announcements. When a new announcement arrives, its timestamp is compared against any previously stored announcements for the same channel, direction and node. Newer announcements replace older ones, while older announcements are discarded. The implementation of this logic prior to v0.20.1 can be found in [`deDupedAnnouncements.addMsg`](https://github.com/lightningnetwork/lnd/blob/91423ee5198e116b210f7f1c2e8b506d5ab28266/discovery/gossiper.go#L1133-L1229).
 
 ## The vulnerability
 
@@ -76,7 +76,7 @@ The fuzz target used for discovery is available in the associated [pull request]
 - **2025-12-17:** Independently confirmed by [Matt](https://github.com/morehouse) using an attack program.
 - **2025-12-18:** Privately disclosed to the LND security mailing list.
 - **2026-01-12:** Fix [merged](https://github.com/lightningnetwork/lnd/pull/10469) into LND.
-- **2026-02-12:** LND _v0.20.1_ released with the fix.
+- **2026-02-12:** LND v0.20.1 released with the fix.
 - **2026-06-16:** [Gijs](https://github.com/gijswijs) confirms that the vulnerability can be disclosed publicly.
 - **2026-06-18:** Public disclosure of the vulnerability.
 

@@ -8,6 +8,9 @@
 {%- endif -%}
 ';
 
+/* all site colors: _sass/_palette.scss */
+@use 'palette';
+
 /* append your custom style below */
 
 /* hide line numbers in code blocks, same as the theme's `.nolineno` */
@@ -20,17 +23,18 @@
   }
 }
 
-/* affected / fixed / impact strip at the top of disclosure posts */
+/* affected / fixed / impact strip at the top of disclosure posts:
+   the one accent-tinted block, so it reads apart from neutral notes */
 .disclosure {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
   gap: 0.75rem 1.5rem;
   margin: 0 0 1.75rem;
   padding: 0.9rem 1.25rem;
-  border: 1px solid rgb(247 147 26 / 25%);
-  border-left: 4px solid #f7931a;
+  border: 1px solid var(--accent-border);
+  border-left: 4px solid var(--accent);
   border-radius: 0.5rem;
-  background: rgb(247 147 26 / 6%);
+  background: var(--accent-bg);
   color: var(--text-color);
   font-size: 0.95rem;
 
@@ -45,17 +49,6 @@
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-  }
-
-  > div:nth-child(1) .disclosure-label {
-    color: #e5534b; /* affected */
-  }
-
-  > div:nth-child(2) .disclosure-label {
-    color: #2ea05a; /* fixed */
-  }
-
-  > div:nth-child(3) .disclosure-label {
-    color: #e8890c; /* impact */
+    color: var(--text-muted-color);
   }
 }

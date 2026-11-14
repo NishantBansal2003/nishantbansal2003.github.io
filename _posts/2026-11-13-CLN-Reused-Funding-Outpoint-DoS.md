@@ -15,7 +15,7 @@ disclosure:
 republished_from: https://lnfuzz.org/advisories/cln-duplicate-funding-outpoint-dos/
 ---
 
-Core Lightning _v0.12.0_ through _v26.06.7_ accept a `funding_created` that reuses a funding outpoint already belonging to another channel.
+Core Lightning v0.12.0 through v26.06.7 accept a `funding_created` that reuses a funding outpoint already belonging to another channel.
 Since a v1 `channel_id` is derived from the funding outpoint, the two channels share a `channel_id`, allowing an attacker to crash the node in two ways.
 In the first variant the attacker reuses the outpoint of an unfunded (pending) channel and then reconnects to the victim, causing CLN to trip an assertion that crashes the whole node.
 This variant is free and repeatable.

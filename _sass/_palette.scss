@@ -1,0 +1,196 @@
+/*
+ * Site palette: the one place for colors, layered on top of Chirpy's
+ * themes (Chirpy's own theme files can't be overridden from the site).
+ *
+ * Rules:
+ * - The accent is only for clickable text and the current position
+ *   (links, active TOC item, checked boxes), plus the disclosure box,
+ *   the one accent-tinted block (--accent-bg / --accent-border).
+ * - Notes (info prompts) are neutral grey, so they read apart from it.
+ * - Hover: the text and its own line (underline or tag/button border)
+ *   turn accent; any hover background is neutral grey.
+ * - Everything else is neutral grey; no greys are blue-tinted.
+ * - Focus (keyboard): an accent ring, never the browser's blue.
+ *
+ * Light mode uses a darker orange than Bitcoin orange so that link text
+ * stays readable on white (5:1 contrast).
+ */
+
+@mixin light {
+  --accent: #b45309;
+  --accent-underline: rgb(180 83 9 / 30%);
+  --hover-bg: rgb(0 0 0 / 5%);
+  --subtle-bg: rgb(0 0 0 / 3%);
+  --soft-border: #e5e5e5;
+  --focus-ring: rgb(180 83 9 / 35%);
+  --accent-bg: rgb(247 147 26 / 7%);
+  --accent-border: rgb(247 147 26 / 30%);
+
+  /* Bootstrap's own link color (used where Chirpy doesn't set one) */
+  --bs-link-color: var(--accent);
+  --bs-link-color-rgb: 180, 83, 9;
+  --bs-link-hover-color: var(--accent);
+  --bs-link-hover-color-rgb: 180, 83, 9;
+
+  /* accent */
+  --link-color: var(--accent);
+  --link-underline-color: var(--accent-underline);
+  --toc-highlight: var(--accent);
+  --checkbox-checked-color: var(--accent);
+  --btn-share-hover-color: var(--accent);
+  --prompt-info-icon-color: var(--text-muted-color);
+
+  /* neutral surfaces */
+  --sidebar-hover-bg: var(--hover-bg);
+  --tag-hover: var(--hover-bg);
+  --footnote-target-bg: var(--hover-bg);
+  --prompt-info-bg: var(--subtle-bg);
+  --btn-border-color: var(--soft-border);
+  --tag-border: var(--soft-border);
+  --categories-icon-hover-color: var(--heading-color);
+
+  /* Chirpy's cool greys made neutral */
+  --mask-bg: #c4c4c4;
+  --sidebar-bg: #f7f7f7;
+  --search-icon-color: #c4c4c4;
+  --search-tag-bg: #f7f7f7;
+  --timeline-node-bg: #c4c4c4;
+  --tb-odd-bg: #fbfbfb;
+  --highlight-bg-color: #f7f7f7;
+  --highlighter-rouge-color: #444444;
+}
+
+@mixin dark {
+  --accent: #f7931a;
+  --accent-underline: rgb(247 147 26 / 35%);
+  --hover-bg: rgb(255 255 255 / 6%);
+  --subtle-bg: rgb(255 255 255 / 4%);
+  --soft-border: rgb(255 255 255 / 12%);
+  --focus-ring: rgb(247 147 26 / 40%);
+  --accent-bg: rgb(247 147 26 / 8%);
+  --accent-border: rgb(247 147 26 / 25%);
+
+  /* Bootstrap's own link color (used where Chirpy doesn't set one) */
+  --bs-link-color: var(--accent);
+  --bs-link-color-rgb: 247, 147, 26;
+  --bs-link-hover-color: var(--accent);
+  --bs-link-hover-color-rgb: 247, 147, 26;
+
+  /* accent */
+  --link-color: var(--accent);
+  --link-underline-color: var(--accent-underline);
+  --toc-highlight: var(--accent);
+  --checkbox-checked-color: var(--accent);
+  --btn-share-hover-color: var(--accent);
+  --prompt-info-icon-color: var(--text-muted-color);
+
+  /* neutral surfaces */
+  --tag-hover: var(--hover-bg);
+  --footnote-target-bg: var(--hover-bg);
+  --prompt-info-bg: var(--subtle-bg);
+  --tag-border: var(--soft-border);
+
+  /* Chirpy's blue-tinted greys made neutral */
+  --sidebar-btn-bg: #242424;
+  --btn-share-color: #757575;
+  --card-hover-bg: #3a3a3d;
+  --highlighter-rouge-color: #d0d0d0;
+}
+
+/* same selectors as Chirpy's base/_base.scss, so these win by source order */
+html {
+  @media (prefers-color-scheme: light) {
+    &:not([data-mode]),
+    &[data-mode='light'] {
+      @include light;
+    }
+
+    &[data-mode='dark'] {
+      @include dark;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:not([data-mode]),
+    &[data-mode='dark'] {
+      @include dark;
+    }
+
+    &[data-mode='light'] {
+      @include light;
+    }
+  }
+}
+
+/*
+ * Bootstrap's "primary" is blue (#0d6efd) and sits underneath Chirpy:
+ * pressed tags and buttons, focus glows and pagination use it. Point it
+ * at the palette: pressing = the neutral hover, focus = the accent ring.
+ */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn {
+  --bs-btn-focus-box-shadow: 0 0 0 0.2rem var(--focus-ring);
+}
+
+.btn-primary,
+.btn-outline-primary {
+  --bs-btn-color: var(--link-color);
+  --bs-btn-border-color: var(--soft-border);
+  --bs-btn-hover-color: var(--link-color);
+  --bs-btn-hover-bg: var(--hover-bg);
+  --bs-btn-hover-border-color: var(--soft-border);
+  --bs-btn-active-color: var(--link-color);
+  --bs-btn-active-bg: var(--hover-bg);
+  --bs-btn-active-border-color: var(--soft-border);
+  --bs-btn-active-shadow: none;
+  --bs-btn-disabled-color: var(--text-muted-color);
+  --bs-btn-disabled-border-color: var(--soft-border);
+}
+
+.btn-primary {
+  --bs-btn-bg: transparent;
+}
+
+.nav-link:focus-visible,
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem var(--focus-ring);
+}
+
+.form-control:focus {
+  border-color: var(--input-focus-border-color);
+}
+
+.pagination {
+  --bs-pagination-focus-box-shadow: 0 0 0 0.2rem var(--focus-ring);
+  --bs-pagination-active-bg: var(--hover-bg);
+  --bs-pagination-active-border-color: var(--soft-border);
+}
+
+.btn-close {
+  --bs-btn-close-focus-shadow: 0 0 0 0.2rem var(--focus-ring);
+}
+
+/* colors Chirpy hard-codes outside its theme files */
+
+/* link hover: Chirpy's %link-hover uses a fixed red-orange (#d2603a) */
+#page-category a:hover,
+#page-tag a:hover,
+#access-lastmod a:hover,
+.post-tail-wrapper .license-wrapper > a:hover,
+#search-results a:hover,
+footer a:hover,
+#topbar #breadcrumb a:hover,
+.post-meta a:not([class]):hover,
+.content a:not(.img-link):hover {
+  color: var(--link-color) !important;
+  border-bottom-color: var(--link-color);
+}
+
+/* tags and older/newer buttons: Chirpy's hover border is a fixed blue (#007bff) */
+.btn.btn-outline-primary:not(.disabled):hover {
+  border-color: var(--link-color) !important;
+}
