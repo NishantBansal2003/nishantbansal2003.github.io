@@ -2,7 +2,7 @@
 title: "Summer of Bitcoin 2025: Continuous Fuzzing for LND"
 date: 2025-08-20 10:30:00 +0530
 categories: [Lightning, Mentorship]
-tags: [summer-of-bitcoin, fuzzing, lnd, open-source]
+tags: [fuzzing, lnd]
 description: Summer of Bitcoin 2025 final report on building a continuous fuzzing solution for LND.
 image:
   path: /assets/img/summer-of-bitcoin.png

@@ -4,18 +4,18 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-I'm **Nishant Bansal**, a Bitcoin Lightning Network security researcher supported by a [Spiral](https://spiral.xyz/grants/) grant.
-I look for bugs that let a malicious peer crash a node or steal its funds in LND, Core Lightning, Eclair and LDK, and disclose them privately.
-Writeups appear here once a fix has shipped and disclosure is cleared.
+I'm **Nishant Bansal**, a Bitcoin Lightning Network security researcher.
 
-## How I find them
+I find bugs that let a malicious peer crash a node or steal its funds in Lightning implementations (LND, Core Lightning, Eclair and LDK).
+I report them privately and write them up here once the disclosure period ends.
 
-- **Fuzzing**: stateful, differential and snapshot fuzzing, through fuzz targets I've written for each implementation, [bitcoinfuzz](https://github.com/bitcoinfuzz/bitcoinfuzz), and [Smite](https://github.com/lnfuzz/smite)
-- **LLM-assisted variant analysis** with the [lnfuzz](https://lnfuzz.org) team, hunting for relatives of bugs the fuzzers find
-- **Manual review** of the code paths a malicious peer can reach
+To find them, I mostly use:
 
-Other bugs I've reported are tracked at [lnfuzz.org/bugs](https://lnfuzz.org/bugs/).
-I've talked about this work on the Bitcoin Optech Podcast ([#411](https://bitcoinops.org/en/podcast/2026/06/30/), [#429](https://bitcoinops.org/en/podcast/2026/11/03/)).
+- Fuzzing, with [smite](https://github.com/lnfuzz/smite), [bitcoinfuzz](https://github.com/bitcoinfuzz/bitcoinfuzz) and my own fuzz targets
+- LLM-assisted searches for variants of known bugs, with the [lnfuzz](https://lnfuzz.org) team
+- Manual code review
+
+See also [other bugs I've reported](https://lnfuzz.org/bugs/) and my talks on the [Bitcoin Optech Podcast](https://bitcoinops.org/en/podcast/).
 
 ## Contact
 

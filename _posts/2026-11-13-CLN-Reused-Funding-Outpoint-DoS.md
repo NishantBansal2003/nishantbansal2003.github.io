@@ -1,6 +1,6 @@
 ---
 title: "CLN: Reused Funding Outpoint DoS"
-date: 2026-11-10 10:30:00 +0530
+date: 2026-11-13 10:30:00 +0530
 categories: [Lightning, Security]
 tags: [cln, dos, bolt2, fuzzing, smite]
 description: Technical analysis of a reused funding outpoint DoS vulnerability in CLN.
