@@ -12,6 +12,7 @@ disclosure:
   fixed: v0.20.1
   fixed_url: https://github.com/lightningnetwork/lnd/releases/tag/v0.20.1-beta
   impact: Remote gossip stall
+republished_from: https://security.lightning.engineering/2026/09/21/lnd-gossip-validation-barrier-stall.html
 ---
 
 LND _v0.19.0_ through _v0.20.0_ can send two validation results for a gossip message on a channel that has room for only one.
