@@ -2,7 +2,10 @@
 
 source "https://rubygems.org"
 
-gem "jekyll-theme-chirpy", "~> 7.4", ">= 7.4.1"
+# Not pinned: the deploy always builds with the newest Chirpy. It fails without
+# publishing if that differs from the version in .chirpy-version (the one the
+# site design was checked against); see tools/check-chirpy-version.sh.
+gem "jekyll-theme-chirpy", ">= 7.6.0"
 
 gem "html-proofer", "~> 5.0", group: :test
 

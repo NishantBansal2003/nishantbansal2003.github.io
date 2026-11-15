@@ -44,10 +44,20 @@ jobs:
           ruby-version: 3.3
           bundler-cache: true
 
+      # Fails (and blocks the deploy) when the newest Chirpy differs from the
+      # version the site design was checked against (.chirpy-version).
+      - name: Check Chirpy version
+        run: bash tools/check-chirpy-version.sh
+
       - name: Build site
         run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: "production"
+
+      # Fails (and blocks the deploy) if a Chirpy change stops
+      # _sass/_palette.scss from overriding the theme's colors.
+      - name: Check palette
+        run: python3 tools/check-palette.py "_site${{ steps.pages.outputs.base_path }}/assets/css/jekyll-theme-chirpy.css"
 
       - name: Test site
         run: |

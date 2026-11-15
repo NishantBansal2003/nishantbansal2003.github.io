@@ -56,9 +56,15 @@ main() {
 
   read_baseurl
 
+  # installed Chirpy is the one the design was checked against
+  bash tools/check-chirpy-version.sh
+
   # build
   JEKYLL_ENV=production bundle exec jekyll b \
     -d "$SITE_DIR$_baseurl" -c "$_config"
+
+  # palette still overrides Chirpy's colors
+  python3 tools/check-palette.py "$SITE_DIR$_baseurl/assets/css/jekyll-theme-chirpy.css"
 
   # test
   bundle exec htmlproofer "$SITE_DIR" \

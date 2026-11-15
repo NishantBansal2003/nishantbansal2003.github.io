@@ -95,30 +95,29 @@
   --btn-share-color: #757575;
   --card-hover-bg: #3a3a3d;
   --highlighter-rouge-color: #d0d0d0;
+  --menu-active-color: rgb(255 255 255 / 63%);
 }
 
-/* same selectors as Chirpy's base/_base.scss, so these win by source order */
-html {
-  @media (prefers-color-scheme: light) {
-    &:not([data-mode]),
-    &[data-mode='light'] {
-      @include light;
-    }
+/*
+ * Same selectors as Chirpy 7.6's base/_base.scss, so these win by source
+ * order. If a Chirpy upgrade changes them, tools/check-palette.py fails the
+ * deploy until this block is updated to match.
+ */
+:root[data-bs-theme='light'] {
+  @include light;
+}
 
-    &[data-mode='dark'] {
-      @include dark;
-    }
+:root[data-bs-theme='dark'] {
+  @include dark;
+}
+
+:root:not([data-bs-theme]) {
+  @media (prefers-color-scheme: light) {
+    @include light;
   }
 
   @media (prefers-color-scheme: dark) {
-    &:not([data-mode]),
-    &[data-mode='dark'] {
-      @include dark;
-    }
-
-    &[data-mode='light'] {
-      @include light;
-    }
+    @include dark;
   }
 }
 
@@ -185,6 +184,7 @@ html {
 footer a:hover,
 #topbar #breadcrumb a:hover,
 .post-meta a:not([class]):hover,
+.post-edit > a:hover,
 .content a:not(.img-link):hover {
   color: var(--link-color) !important;
   border-bottom-color: var(--link-color);
@@ -193,4 +193,9 @@ footer a:hover,
 /* tags and older/newer buttons: Chirpy's hover border is a fixed blue (#007bff) */
 .btn.btn-outline-primary:not(.disabled):hover {
   border-color: var(--link-color) !important;
+}
+
+/* Mastodon share dialog (if enabled in _data/share.yml): same fixed blue */
+.share-mastodon {
+  --wc-stm-form-button-background-color-hover: var(--accent);
 }
